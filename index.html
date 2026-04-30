@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beata Woźniak-Jęchorek</title>
+<style>
+  :root {
+    --navy:#1a2744; --gold:#b8972a; --gold-light:#d4af37;
+    --cream:#faf8f3; --white:#fff; --text:#2c2c2c;
+    --text-light:#5a5a5a; --border:#ddd5c0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Georgia','Times New Roman',serif;background:var(--cream);color:var(--text)}
+
+  /* NAV */
+  nav{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+  .nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;flex-wrap:wrap;padding:0 20px}
+  .nav-brand{color:var(--gold-light);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:14px 18px 14px 0;border-right:1px solid rgba(255,255,255,.15);margin-right:8px;white-space:nowrap}
+  .nav-tabs{display:flex;flex-wrap:wrap}
+  .nav-tab{color:rgba(255,255,255,.78);font-family:Arial,sans-serif;font-size:.73rem;letter-spacing:.05em;
+    text-transform:uppercase;padding:16px 11px;cursor:pointer;border:none;background:none;
+    border-bottom:3px solid transparent;transition:all .25s;white-space:nowrap}
+  .nav-tab:hover{color:var(--gold-light);border-bottom-color:rgba(212,175,55,.4)}
+  .nav-tab.active{color:var(--gold-light);border-bottom-color:var(--gold-light)}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--navy) 0%,#253460 60%,#1e3a5f 100%);color:#fff;padding:60px 20px 50px}
+  .hero-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:50px;flex-wrap:wrap}
+  .hero-photo{width:200px;height:200px;border-radius:50%;border:4px solid var(--gold-light);
+    object-fit:cover;object-position:top center;box-shadow:0 8px 30px rgba(0,0,0,.4);flex-shrink:0}
+  .hero-text h1{font-size:2.2rem;font-weight:normal;letter-spacing:.03em;margin-bottom:6px}
+  .hero-text .subtitle{color:var(--gold-light);font-size:1rem;font-style:italic;margin-bottom:14px;font-family:Arial,sans-serif}
+  .hero-text .affil{font-family:Arial,sans-serif;font-size:.85rem;color:rgba(255,255,255,.85);line-height:1.75}
+  .hero-links{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+  .hero-link{background:rgba(255,255,255,.1);border:1px solid var(--gold);color:var(--gold-light);
+    padding:6px 14px;border-radius:3px;font-family:Arial,sans-serif;font-size:.77rem;
+    text-decoration:none;transition:all .2s;letter-spacing:.05em}
+  .hero-link:hover{background:var(--gold);color:var(--navy)}
+
+  /* CONTENT */
+  .content{max-width:1100px;margin:0 auto;padding:0 20px 60px}
+  .section{display:none;opacity:0;transform:translateY(18px);transition:opacity .4s ease,transform .4s ease;padding:50px 0 20px}
+  .section.active{display:block}
+  .section.visible{opacity:1;transform:translateY(0)}
+
+  h2.sec-title{font-size:1.55rem;color:var(--navy);font-weight:normal;
+    border-bottom:2px solid var(--gold);padding-bottom:10px;margin-bottom:28px;letter-spacing:.04em}
+  h3.sub-title{font-size:1.05rem;color:var(--navy);margin:28px 0 12px;font-weight:bold}
+  p{line-height:1.85;color:var(--text);margin-bottom:14px;font-size:.97rem}
+
+  .card{background:#fff;border:1px solid var(--border);border-left:4px solid var(--gold);
+    padding:20px 24px;margin-bottom:16px;border-radius:0 4px 4px 0;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+  .card .year{font-family:Arial,sans-serif;font-size:.76rem;color:var(--gold);text-transform:uppercase;letter-spacing:.08em}
+  .card .title{font-size:.97rem;margin:5px 0;line-height:1.5}
+  .card .meta{font-family:Arial,sans-serif;font-size:.82rem;color:var(--text-light);line-height:1.65}
+  .card a{color:var(--navy)}
+
+  .badge-new{display:inline-block;background:var(--gold);color:var(--navy);font-family:Arial,sans-serif;
+    font-size:.68rem;font-weight:bold;padding:2px 7px;border-radius:2px;margin-left:8px;vertical-align:middle;letter-spacing:.05em}
+
+  .pub-item{padding:16px 0;border-bottom:1px solid var(--border);font-size:.92rem;line-height:1.78}
+  .pub-item:last-child{border-bottom:none}
+  .pub-authors{color:var(--text-light)}
+  .pub-title{font-weight:bold;color:var(--navy);margin:2px 0}
+  .pub-journal{font-style:italic;color:var(--text-light)}
+  .pub-link{font-family:Arial,sans-serif;font-size:.77rem;color:var(--gold);text-decoration:none}
+  .pub-link:hover{text-decoration:underline}
+
+  .award-item{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px solid var(--border)}
+  .award-icon{color:var(--gold);font-size:1.3rem;flex-shrink:0}
+  .award-text{font-size:.93rem;line-height:1.7}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:700px){.two-col{grid-template-columns:1fr}}
+
+  .contact-box{background:var(--navy);color:#fff;padding:36px 40px;border-radius:4px;max-width:560px}
+  .contact-box h3{color:var(--gold-light);margin-bottom:18px;font-size:1.1rem;font-weight:normal;letter-spacing:.06em;text-transform:uppercase}
+  .contact-row{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+  .contact-label{font-family:Arial,sans-serif;font-size:.74rem;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;width:64px;flex-shrink:0;padding-top:2px}
+  .contact-val{font-size:.9rem;line-height:1.65;color:rgba(255,255,255,.9)}
+  .contact-val a{color:var(--gold-light);text-decoration:none}
+
+  .tag{display:inline-block;background:var(--navy);color:#fff;font-family:Arial,sans-serif;
+    font-size:.71rem;padding:3px 10px;border-radius:2px;margin:3px 3px 3px 0;letter-spacing:.04em}
+
+  .orcid-bar{background:#fff;border:1px solid var(--border);padding:14px 20px;
+    display:flex;gap:24px;flex-wrap:wrap;align-items:center;margin-bottom:30px;
+    border-radius:3px;font-family:Arial,sans-serif;font-size:.82rem}
+  .orcid-bar a{color:var(--navy);text-decoration:none}
+  .orcid-bar a:hover{color:var(--gold)}
+  .orcid-bar span{color:var(--gold);font-weight:bold}
+
+  footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;
+    padding:20px;font-family:Arial,sans-serif;font-size:.78rem;margin-top:40px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">B. Woźniak-Jęchorek</div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showTab('home',0)">Home</button>
+      <button class="nav-tab" onclick="showTab('about',1)">About</button>
+      <button class="nav-tab" onclick="showTab('education',2)">Education</button>
+      <button class="nav-tab" onclick="showTab('research',3)">Research</button>
+      <button class="nav-tab" onclick="showTab('publications',4)">Publications</button>
+      <button class="nav-tab" onclick="showTab('keynotes',5)">Keynotes</button>
+      <button class="nav-tab" onclick="showTab('expert',6)">Expert Opinions</button>
+      <button class="nav-tab" onclick="showTab('awards',7)">Awards</button>
+      <button class="nav-tab" onclick="showTab('courses',8)">Courses</button>
+      <button class="nav-tab" onclick="showTab('experience',9)">Experience</button>
+      <button class="nav-tab" onclick="showTab('contact',10)">Contact</button>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <img class="hero-photo" id="heroImg" src="" alt="Beata Woźniak-Jęchorek">
+    <div class="hero-text">
+      <h1>Beata Woźniak-Jęchorek</h1>
+      <div class="subtitle">Associate Professor · Ph.D., Habilitation in Economics</div>
+      <div class="affil">
+        Poznań University of Economics and Business, Poland<br>
+        Institute of Economics · Department of Macroeconomics and Development Research<br><br>
+        <strong style="color:var(--gold-light)">EAEPE</strong> Council Member — 2024–2025 &amp; 2026–2027 terms
+      </div>
+      <div class="hero-links">
+        <a class="hero-link" href="https://orcid.org/0000-0002-5029-5885" target="_blank">ORCID</a>
+        <a class="hero-link" href="https://www.researchgate.net/profile/Beata_Wozniak-Jechorek/research" target="_blank">ResearchGate</a>
+        <a class="hero-link" href="https://www.linkedin.com/in/beata-wo%C5%BAniak-j%C4%99chorek-8736915a/" target="_blank">LinkedIn</a>
+        <a class="hero-link" href="https://ue.poznan.pl/osoby/dr-hab-beata-wozniak-jechorek/" target="_blank">PUEB Profile</a>
+        <a class="hero-link" href="http://www.rework.ue.poznan.pl" target="_blank">REWORK Project</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- HOME -->
+  <div class="section active" id="tab-home">
+    <h2 class="sec-title">Welcome</h2>
+    <p>Welcome to the academic website of <strong>Beata Woźniak-Jęchorek</strong>, Associate Professor at the Poznań University of Economics and Business (PUEB), Poland.</p>
+    <div class="orcid-bar">
+      <div><span>ORCID</span> <a href="https://orcid.org/0000-0002-5029-5885" target="_blank">0000-0002-5029-5885</a></div>
+      <div><span>ResearchGate</span> <a href="https://www.researchgate.net/profile/Beata_Wozniak-Jechorek/research" target="_blank">Profile</a></div>
+      <div><span>EAEPE</span> <a href="http://www.eaepe.org" target="_blank">www.eaepe.org</a></div>
+      <div><span>REWORK Project</span> <a href="http://www.rework.ue.poznan.pl" target="_blank">www.rework.ue.poznan.pl</a></div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="year">Research Focus</div>
+        <div class="title">Labour Market Institutions &amp; Digital Transformation</div>
+        <div class="meta">Institutional problems of labor markets, digital transformation, future of work, remote working, new industrial relations, Industry 4.0 / Economy 5.0.</div>
+      </div>
+      <div class="card">
+        <div class="year">Current Project <span class="badge-new">ACTIVE</span></div>
+        <div class="title">REWORK — Can Remote Working Make Labour Market More Inclusive?</div>
+        <div class="meta">OPUS-25 · National Science Center Poland · 2024–2027 · 807,425 PLN (~€188,000)<br><a href="http://www.rework.ue.poznan.pl" target="_blank">www.rework.ue.poznan.pl</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section" id="tab-about">
+    <h2 class="sec-title">About Me</h2>
+    <p>I am an Associate Professor at the Institute of Economics at the Poznań University of Economics and Business in Poland. My research focuses on the institutional problems of labor markets, digital transformation, the future of work, remote working, and new industrial relations.</p>
+    <p>I have contributed to various highly ranked journals and my monographs have appeared with <strong>Routledge (Taylor &amp; Francis)</strong> and <strong>Palgrave Macmillan</strong>. My book titled <em>'Institutional Determinants of the Polish Labor Market: A Theoretical and Empirical Study'</em> received recognition as the top labor market publication in Poland by The Polish Academy of Science in 2016. Additionally, I was honored with the BISE Bank Award for my outstanding Ph.D. thesis.</p>
+    <p>In 2021, I was awarded a scholarship by the Polish National Agency for Academic Exchange (Bekker Programme), allowing me to spend 15 months at <strong>Northwestern University</strong> in the United States (ranked as the ninth-best university in the country by U.S. News &amp; World Report). My research portfolio includes numerous projects funded by Polish institutions, including the National Science Centre, the Ministry of Science and Higher Education, and the National Centre for Research and Development, as well as European institutions such as the European Commission's DG REGIO and Eurofound.</p>
+    <p>I serve as a Council Member of the <strong>European Association for Evolutionary Political Economy (EAEPE)</strong> for the 2024–2025 and 2026–2027 terms.</p>
+    <div style="margin-top:20px">
+      <div class="tag">Labour Market Institutions</div><div class="tag">Digital Transformation</div>
+      <div class="tag">Future of Work</div><div class="tag">Remote Working</div>
+      <div class="tag">Industry 4.0</div><div class="tag">Economy 5.0</div>
+      <div class="tag">Income Inequalities</div><div class="tag">CEE Countries</div>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section" id="tab-education">
+    <h2 class="sec-title">Education &amp; Diplomas</h2>
+    <div class="card">
+      <div class="year">2016 · Habilitation</div>
+      <div class="title">Habilitation Degree in Economics</div>
+      <div class="meta">Poznań University of Economics and Business (PUEB), Faculty of Economics<br>
+      Dissertation: <em>"Institutional Determinants of the Polish Labor Market: A Theoretical and Empirical Study"</em></div>
+    </div>
+    <div class="card">
+      <div class="year">2006 · Ph.D.</div>
+      <div class="title">Ph.D. in Economics</div>
+      <div class="meta">Poznań University of Economics and Business (PUEB), Faculty of Economics<br>
+      Thesis: <em>"Unemployment of Equilibrium and Disequilibrium vs. State Policy for Labor Market"</em></div>
+    </div>
+    <div class="card">
+      <div class="year">2002 · Master's</div>
+      <div class="title">Master's Degree in Economics</div>
+      <div class="meta">Poznań University of Economics and Business (PUEB), Faculty of Economics</div>
+    </div>
+    <div class="card">
+      <div class="year">2021–2022 · Fellowship</div>
+      <div class="title">Bekker Programme Fellow — Northwestern University, USA</div>
+      <div class="meta">Polish National Agency for Academic Exchange · Institute for Policy Research, Northwestern University<br>
+      Project: <em>"The Changing Labor Market Institutions in the Age of Industry 4.0"</em></div>
+    </div>
+  </div>
+
+  <!-- RESEARCH -->
+  <div class="section" id="tab-research">
+    <h2 class="sec-title">Research Projects</h2>
+    <div class="card">
+      <div class="year">2024–2027 <span class="badge-new">ACTIVE</span></div>
+      <div class="title">REWORK — Can Remote Working Make Labour Market More Inclusive?</div>
+      <div class="meta">OPUS-25 · National Science Center in Poland · Grant No. 2023/49/B/HS4/01647/R · 807,425 PLN (~€188,000) · <strong>Principal Investigator</strong><br><a href="https://ue.poznan.pl/en/institutes-and-departments/institute-of-economics/department-of-macroeconomics-and-development-research/rework-can-remote-working-make-labor-market-more-inclusive/" target="_blank">More about REWORK project</a></div>
+    </div>
+    <div class="card">
+      <div class="year">2024–2027 <span class="badge-new">ACTIVE</span></div>
+      <div class="title">PUEB for Economy 5.0: Regional Initiative – Global Impact (RIGI)</div>
+      <div class="meta">Regional Initiative for Excellence · Grant No. RID/SP/0038/2024/01 · 8,192,400 PLN · <strong>Scientific Coordinator</strong></div>
+    </div>
+    <div class="card">
+      <div class="year">Mar–Jun 2024</div>
+      <div class="title">Preferences of Polish Employees Regarding Remote Work and Willingness to Relocate</div>
+      <div class="meta">Minister of Science of the Republic of Poland · 7,995 PLN · <strong>Investigator</strong></div>
+    </div>
+    <div class="card">
+      <div class="year">2022–2023</div>
+      <div class="title">Technology for Acquisition and Sale of Economic Copyright via Digital Platform</div>
+      <div class="meta">National Center for Research and Development · Grant No. POIR.01.01.01-00-1515/20 · 4,013,883.50 PLN · <strong>Investigator</strong></div>
+    </div>
+    <div class="card">
+      <div class="year">Apr–Jun 2022</div>
+      <div class="title">Future of Work — Remote Working</div>
+      <div class="meta">Northwestern University, Institute for Policy Research · <strong>Principal Investigator</strong></div>
+    </div>
+    <div class="card">
+      <div class="year">Mar 2021–Mar 2022</div>
+      <div class="title">The Changing Labor Market Institutions in the Age of Industry 4.0</div>
+      <div class="meta">Bekker Programme · Polish National Agency for Academic Exchange · Northwestern University, USA · 238,000 PLN · <strong>Principal Investigator</strong></div>
+    </div>
+    <div class="card">
+      <div class="year">2021–2022</div>
+      <div class="title">Economics in the Face of the New Economy</div>
+      <div class="meta">Regional Initiative for Excellence · Grant No. 004/RID/2018/19 · 3,000,000 PLN · <strong>Coordinator of Research Area: Economics</strong></div>
+    </div>
+    <div class="card">
+      <div class="year">2019–2021</div>
+      <div class="title">Labour Market Regulations in the Age of New Economy</div>
+      <div class="meta">Regional Initiative for Excellence · 40,000 PLN · <strong>Principal Investigator</strong></div>
+    </div>
+  </div>
+
+  <!-- PUBLICATIONS -->
+  <div class="section" id="tab-publications">
+    <h2 class="sec-title">Selected Publications in English</h2>
+
+    <div class="pub-item">
+      <div class="pub-authors">Beata Woźniak-Jęchorek, Amanda Sahar D'Urso, Chloe N. Thurston &amp; Megha Patnaik (2026). <span class="badge-new">NEW</span></div>
+      <div class="pub-title">Understanding Employee Trade-Offs in Remote Work: Toward More Sustainable Workplace Design.</div>
+      <div class="pub-journal"><em>The Journal of Strategic Information Systems</em>, Volume 35, Issue 2. <a class="pub-link" href="https://www.sciencedirect.com/science/article/pii/S096386872600017X?dgcid=author" target="_blank">Link</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Slawomir Kuzmar, Beata Wozniak-Jechorek &amp; David Bole (2026).</div>
+      <div class="pub-title">Will remote work drive a new wave of suburbanisation in Poland? Analysing the relocation preferences of Polish office employees.</div>
+      <div class="pub-journal"><em>Applied Geography</em>, Volume 186. <a class="pub-link" href="https://doi.org/10.1016/j.apgeog.2025.103848" target="_blank">DOI</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Beata Wozniak-Jechorek &amp; Slawomir Kuzmar (2025).</div>
+      <div class="pub-title">The role of digitalisation in shaping regional economies: challenges and opportunities.</div>
+      <div class="pub-journal">Harnessing Talent Platform, European Commission. <a class="pub-link" href="https://ec.europa.eu/regional_policy/sources/policy/communities-and-networks/harnessing-talent-platform/The_role_of_digitalisation_in_shaping_regional_economies_November_2025.pdf" target="_blank">PDF</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Beata Wozniak-Jechorek, Katarzyna Wozniak-Jasinska, Wlodzimierz Lewoniewski &amp; Vassil Kirov (2024).</div>
+      <div class="pub-title">Industry 4.0: a Bibliometric Analysis of Social Partners' Public Messages in France and Germany.</div>
+      <div class="pub-journal"><em>The Economic and Labour Relations Review</em>, vol. 35(1), Cambridge University Press. <a class="pub-link" href="https://doi.org/10.1017/elr.2023.52" target="_blank">DOI</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Beata Wozniak-Jechorek, Waldemar Rydzak &amp; Slawomir Kuzmar (2023).</div>
+      <div class="pub-title">Decoding The Interface: Exploring Women's Perspectives On Integrating AI In Professional Work.</div>
+      <div class="pub-journal"><em>Human Technology</em>, vol. 19, nr 3, pp. 325–351. <a class="pub-link" href="https://ht.csr-pub.eu/index.php/ht/article/view/420" target="_blank">Link</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Beata Wozniak-Jechorek &amp; Slawomir Kuzmar (2023).</div>
+      <div class="pub-title">Income Inequalities in the Accelerating Digital Era: Evidence from EU countries and COVID-time.</div>
+      <div class="pub-journal"><em>PANOECONOMICUS</em>, 2023, Vol. 70, Issue 4. <a class="pub-link" href="http://panoeconomicus.org/index.php/jorunal/article/view/2017/800" target="_blank">Link</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Beata Wozniak-Jechorek (2023).</div>
+      <div class="pub-title">Experiments in modern economics – expansion and technological and institutional innovations in the U.S.</div>
+      <div class="pub-journal"><em>Ekonomista</em>, nr 1/2023. <a class="pub-link" href="https://ekonomista.pte.pl/pdf-161838-88676?filename=Experiments%20in%20Modern.pdf" target="_blank">PDF</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Beata Wozniak-Jechorek &amp; Kamilla Marchewka-Bartkowiak (eds.) (2023).</div>
+      <div class="pub-title">Digital Labour Markets in Central and Eastern European Countries: COVID-19 and the Future of Work.</div>
+      <div class="pub-journal">Routledge Taylor&amp;Francis Group, London–New York. <a class="pub-link" href="https://www.routledge.com/Digital-Labour-Markets-in-Central-and-Eastern-European-Countries/Wozniak-Jechorek-Marchewka-Bartkowiak/p/book/9781032354125" target="_blank">Publisher</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Beata Wozniak-Jechorek &amp; Piotr Matuszak (2023).</div>
+      <div class="pub-title">Work from Home: Digital Divide in EU Countries.</div>
+      <div class="pub-journal">In: <em>Digital Labour Markets in Central and Eastern European Countries</em>, Routledge, pp. 15–36.</div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Beata Wozniak-Jechorek &amp; Michal Pilc (eds.) (2021).</div>
+      <div class="pub-title">Labor Market Institutions and Productivity. Labour Utilisation in Central and Eastern Europe.</div>
+      <div class="pub-journal">Routledge Taylor&amp;Francis Group, London–New York. <a class="pub-link" href="https://www.routledge.com/Labour-Market-Institutions-and-Productivity-Labour-Utilisation-in-Central/Wozniak-Jechorek-Pilc/p/book/9780367564230" target="_blank">Publisher</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Michal Pilc, Beata Wozniak-Jechorek, Katarzyna Wozniak &amp; Dawid Piatek (2021).</div>
+      <div class="pub-title">Industry 4.0 in the messages published by Employers and Trade Unions in France, Germany, Poland and the United Kingdom.</div>
+      <div class="pub-journal">In: <em>Digitalization and Firm Performance</em>, Palgrave Macmillan. <a class="pub-link" href="https://ideas.repec.org/h/spr/sprchp/978-3-030-83360-2_7.html" target="_blank">Link</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Jacek Wallusch, Beata Wozniak-Jechorek &amp; Slawomir Kuzmar (2020).</div>
+      <div class="pub-title">Aggregate and regional effects of financialization in CEE countries.</div>
+      <div class="pub-journal"><em>Post-Communist Economies</em>, 32:7, pp. 860–876. <a class="pub-link" href="https://www.tandfonline.com/doi/abs/10.1080/14631377.2020.1745556" target="_blank">DOI</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Sylwia Morawska, Przemyslaw Banasik &amp; Beata Wozniak-Jechorek (2019).</div>
+      <div class="pub-title">The Handling of Business Lawsuits by Common Courts in Poland: Identification of Transaction Costs.</div>
+      <div class="pub-journal"><em>Ekonomista</em>, No. 3, pp. 321–342. <a class="pub-link" href="https://ekonomista.pte.pl/pdf-155487-82305?filename=The%20Handling%20of%20Business.pdf" target="_blank">PDF</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Sylwia Morawska, Blazej Prusak, Przemyslaw Banasiak &amp; Beata Wozniak-Jechorek (2019).</div>
+      <div class="pub-title">Sanctions and their role in preventing the appropriation of the creditor's property rights in bankruptcy proceedings – the case of Poland.</div>
+      <div class="pub-journal"><em>Economics and Business Review</em>, Vol. 5(19), No. 1, pp. 93–113. <a class="pub-link" href="https://journals.ue.poznan.pl/ebr/article/view/357" target="_blank">Link</a></div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Jacek Wallusch &amp; Beata Wozniak-Jechorek (2016).</div>
+      <div class="pub-title">Modern Technologies, Modern Disparities? Regional Inequalities and Innovations in Old and New EU countries.</div>
+      <div class="pub-journal">In: Fadda, S., Tridico, P. (eds.), <em>Varieties of Economic Inequality</em>, Routledge, London–New York, pp. 157–169.</div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Jacek Wallusch &amp; Beata Wozniak-Jechorek (2015).</div>
+      <div class="pub-title">United in diversity – consequences for common Labour Market Policy in times of crisis.</div>
+      <div class="pub-journal">In: Fadda S., Tridico P. (eds.), <em>The Economic Crisis in Social and Institutional Context</em>, Routledge, London–New York, pp. 178–199.</div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-authors">Beata Wozniak-Jechorek (2015).</div>
+      <div class="pub-title">Institutional determinants of regional diversity of labor market in Poland.</div>
+      <div class="pub-journal"><em>Equilibrium. Quarterly Journal of Economics and Economic Policy</em>, 1, Vol. 10, pp. 1–20. <a class="pub-link" href="https://economic-policy.pl/eq/article/view/237" target="_blank">Link</a></div>
+    </div>
+  </div>
+
+  <!-- KEYNOTES -->
+  <div class="section" id="tab-keynotes">
+    <h2 class="sec-title">Keynote Presentations</h2>
+    <div class="card">
+      <div class="year">April 2025 · EFNI, Warsaw <span class="badge-new">2025</span></div>
+      <div class="title">Panelist — "Qualifications and Skills in the Face of Technological Transformation"</div>
+      <div class="meta">European Forum for New Ideas, April 15–16, 2025</div>
+    </div>
+    <div class="card">
+      <div class="year">March 2025 · National Taipei University, Taiwan</div>
+      <div class="title">"Technological Transformation in European Labor Markets: Facts and Challenges" · "The Changing Urban Landscape and Governance Challenges in the Remote Work Era" · "The Potential Impact of Trump Administration Policies on Europe"</div>
+      <div class="meta">March 17–21, 2025</div>
+    </div>
+    <div class="card">
+      <div class="year">February 2025 · Płock</div>
+      <div class="title">Speaker &amp; Discussant — "Migration Problems and Challenges in Europe and the World"</div>
+      <div class="meta">EURES network &amp; Voivodeship Labour Office in Warsaw, February 26, 2025</div>
+    </div>
+    <div class="card">
+      <div class="year">December 2024 · Warsaw</div>
+      <div class="title">"Worker Shortages in European Labour Markets"</div>
+      <div class="meta">Conference: The Migration Crisis and Its Impact on the Labor Market in Poland and EU/EFTA Countries; 20th anniversary of EURES, December 11, 2024</div>
+    </div>
+    <div class="card">
+      <div class="year">January 2024 · Brussels</div>
+      <div class="title">"Impact of Digitalization on Individuals Aged 50+, Women, People with Disabilities and Individuals from Areas Far from Urban Centers"</div>
+      <div class="meta">Better Skilled project summary meeting, January 17, 2024</div>
+    </div>
+    <div class="card">
+      <div class="year">February 2023 · OECD</div>
+      <div class="title">"Human Capital and Connectivity for the Polish Digital Economy"</div>
+      <div class="meta">OECD 2022 Economic Survey of Poland presentation, February 28, 2023</div>
+    </div>
+    <h3 class="sub-title">Selected Conference Presentations</h3>
+    <p style="font-size:.87rem;color:var(--text-light);line-height:2.1">
+      58ème Congrès AIELF, Valladolid (2013) · ICABE, New York (2013) · 25th EAEPE, Paris (2013) · EspaNet Poland, Poznań (2014) · 26th EAEPE, Nicosia (2014) · 8th ICAE, Toruń (2015) · 60ème Congrès AIELF, Poznań (2017) · 2nd ICFEP, Poznań (2018) · Vth International Asian Congress, Toruń (2018) · 30th EAEPE, Nice (2018) · XII UEP-UAM Debate (2018) · 31st EAEPE, Warsaw (2019) · X Congress of Polish Economists, Warsaw (2019) · 4th ICFEP, Poznań (2020) · 33rd EAEPE, online (2021) · 34th EAEPE, Naples (2022) · 35th EAEPE, Leeds, UK (2023) · 36th EAEPE, Bilbao, Spain (2024)
+    </p>
+  </div>
+
+  <!-- EXPERT -->
+  <div class="section" id="tab-expert">
+    <h2 class="sec-title">Expert Opinions &amp; Policy Analysis</h2>
+    <div class="card">
+      <div class="year">Dec 2025 – Nov 2026 <span class="badge-new">NEW</span></div>
+      <div class="title">Policy Analysis Expert — Drivers of Involuntary Part-Time Employment in the EU</div>
+      <div class="meta">Project EUROFOUND/2025/MVP/0022 · Conducted in cooperation with CASE – Center for Social and Economic Research</div>
+    </div>
+    <div class="card">
+      <div class="year">Confederation Lewiatan</div>
+      <div class="title">The Impact of Digitization Processes on People Aged 50+, Women, People with Disabilities, and Individuals from Rural Areas</div>
+      <div class="meta"><em>Possibilities for Supporting Equal Opportunities in the Labour Market</em><br><a href="https://lewiatan.org/raporty-i-manifesty/" target="_blank">lewiatan.org/raporty-i-manifesty</a></div>
+    </div>
+    <div class="card">
+      <div class="year">Confederation Lewiatan</div>
+      <div class="title">Forecast of the Demand for Competences and Qualifications in Selected Industries Due to Changes in the Economy</div>
+      <div class="meta"><a href="https://lewiatan.org/raporty-i-manifesty/" target="_blank">lewiatan.org/raporty-i-manifesty</a></div>
+    </div>
+    <div class="card">
+      <div class="year">OECD · 2023</div>
+      <div class="title">Expert Opinion for OECD Economic Surveys: Poland 2023</div>
+      <div class="meta">Biuletyn Stałego Przedstawicielstwa RP przy OECD 3(66)/2023<br>
+      <a href="https://www.researchgate.net/publication/372344007_OECD_Economic_Surveys_Poland_2023_OECD_360_366_2023_supplement" target="_blank">ResearchGate</a></div>
+    </div>
+  </div>
+
+  <!-- AWARDS -->
+  <div class="section" id="tab-awards">
+    <h2 class="sec-title">Research Awards</h2>
+    <div class="award-item">
+      <div class="award-icon">★</div>
+      <div class="award-text"><strong>Polish Academy of Science Award (2016)</strong> — Best book on labour market: <em>"Institutional Determinants of the Polish Labor Market: A Theoretical and Empirical Study"</em></div>
+    </div>
+    <div class="award-item">
+      <div class="award-icon">★</div>
+      <div class="award-text"><strong>Ministry of Science and Higher Education Award (2010)</strong> — Co-authoring monograph: <em>"The impact of nominal variables on the real economy in terms of transformation in Central Europe"</em></div>
+    </div>
+    <div class="award-item">
+      <div class="award-icon">★</div>
+      <div class="award-text"><strong>PUEB Foundation Award (2007)</strong> — Best Ph.D. thesis, Poznań University of Economics and Business</div>
+    </div>
+    <div class="award-item">
+      <div class="award-icon">★</div>
+      <div class="award-text"><strong>BISE Bank Award (2007)</strong> — Best Ph.D. thesis, 2nd place in the 15th competition</div>
+    </div>
+    <div class="award-item">
+      <div class="award-icon">★</div>
+      <div class="award-text"><strong>Ministry of Education Award (2003)</strong> — Co-authoring monograph: <em>"Labor market during transition"</em></div>
+    </div>
+  </div>
+
+  <!-- COURSES -->
+  <div class="section" id="tab-courses">
+    <h2 class="sec-title">Teaching &amp; Courses</h2>
+    <div class="card">
+      <div class="year">March 2026 <span class="badge-new">NEW</span></div>
+      <div class="title">Visiting Professor — MBS School of Business, Montpellier, France</div>
+      <div class="meta">March 16–20, 2026 · Lecture topic: <em>"Digital Transformation &amp; Macroeconomic Dynamics in the Fifth Industrial Revolution"</em></div>
+    </div>
+    <div class="card">
+      <div class="year">2006–2013 · Visiting Professor</div>
+      <div class="title">University of Rennes 1, School of Business Administration (Institut de Gestion de Rennes), France</div>
+      <div class="meta">Lecture: <em>"Economics"</em></div>
+    </div>
+    <div class="card">
+      <div class="year">2007–2008 · Academic Traineeship</div>
+      <div class="title">Institute of Technology, University of Rennes 1, Saint-Malo, France</div>
+    </div>
+    <div class="card">
+      <div class="year">Ongoing · PUEB</div>
+      <div class="title">Poznań University of Economics and Business</div>
+      <div class="meta">Lectures and seminars at BA, MA and PhD level (Polish and English):<br>
+      <em>Macroeconomics · History of Economic Thought · History and Methodology of Economic Science · Global Economy</em></div>
+    </div>
+    <h3 class="sub-title">Technical Skills</h3>
+    <div>
+      <div class="tag">R / R Studio (expert)</div>
+      <div class="tag">LaTeX / Overleaf (intermediate)</div>
+      <div class="tag">Qualtrics (intermediate)</div>
+      <div class="tag">STATA (intermediate)</div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="section" id="tab-experience">
+    <h2 class="sec-title">Professional Experience in Private Sector</h2>
+    <div class="card">
+      <div class="year">February 2022 – November 2023</div>
+      <div class="title">Arternity — Art Market, Blockchain Technology, Finance and Investment</div>
+      <div class="meta"><a href="https://arternity.net/#home" target="_blank">arternity.net</a></div>
+    </div>
+    <div class="card">
+      <div class="year">February 2022 – November 2023</div>
+      <div class="title">Royalty Trade Zone — Consultant</div>
+      <div class="meta"><a href="https://royaltytradezone.eu/" target="_blank">royaltytradezone.eu</a></div>
+    </div>
+    <div class="card">
+      <div class="year">Ongoing</div>
+      <div class="title">Expert Evaluator of Grant Applications — Industrial Development Agency S.A. (ARP)</div>
+      <div class="meta">Calls run within the <strong>Dig.IT. Digital Transformation</strong> project, financed under the European Funds for a Modern Economy Programme 2021–2027 (FENG), Measure 2.21.</div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section" id="tab-contact">
+    <h2 class="sec-title">Contact</h2>
+    <div class="contact-box">
+      <h3>Get in Touch</h3>
+      <div class="contact-row">
+        <div class="contact-label">Address</div>
+        <div class="contact-val">Poznań University of Economics and Business<br>Al. Niepodległości 10, 61-895 Poznań, Poland</div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-label">Email</div>
+        <div class="contact-val"><a href="mailto:beata.wozniak-jechorek@ue.poznan.pl">beata.wozniak-jechorek@ue.poznan.pl</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-label">ORCID</div>
+        <div class="contact-val"><a href="https://orcid.org/0000-0002-5029-5885" target="_blank">0000-0002-5029-5885</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-val"><a href="https://www.linkedin.com/in/beata-wo%C5%BAniak-j%C4%99chorek-8736915a/" target="_blank">View Profile</a></div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-label">PUEB</div>
+        <div class="contact-val"><a href="https://ue.poznan.pl/osoby/dr-hab-beata-wozniak-jechorek/" target="_blank">Official University Profile</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2026 Beata Woźniak-Jęchorek · Poznań University of Economics and Business</footer>
+
+<script>
+(function(){
+  const img = document.getElementById('heroImg');
+  const srcs = [
+    'https://static.wixstatic.com/media/6fe48f_53e7390c6fa9485ab34f2c2b958ae5ba~mv2.jpg/v1/fill/w_400,h_600,al_c,q_85,enc_avif,quality_auto/3L0A1193.jpg',
+    'https://static.wixstatic.com/media/6fe48f_66eb11c5624341aab8644168539ea05f~mv2.jpg',
+    'https://static.wixstatic.com/media/6fe48f_53e7390c6fa9485ab34f2c2b958ae5ba~mv2.jpg'
+  ];
+  let i = 0;
+  function tryNext(){
+    if(i >= srcs.length){
+      // Fallback: initials canvas
+      const c = document.createElement('canvas');
+      c.width = 200; c.height = 200;
+      const ctx = c.getContext('2d');
+      ctx.fillStyle = '#253460'; ctx.fillRect(0,0,200,200);
+      ctx.fillStyle = '#d4af37'; ctx.font = 'bold 72px Georgia';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('BW', 100, 100);
+      img.src = c.toDataURL();
+      return;
+    }
+    img.src = srcs[i++];
+  }
+  img.onerror = tryNext;
+  tryNext();
+})();
+
+function showTab(id, idx){
+  const tabs = document.querySelectorAll('.nav-tab');
+  tabs.forEach((t,i) => t.classList.toggle('active', i === idx));
+  const cur = document.querySelector('.section.active');
+  if(cur && cur.id !== 'tab-' + id){
+    cur.classList.remove('visible');
+    setTimeout(() => { cur.classList.remove('active'); revealSection(id); }, 300);
+  } else if(!cur){
+    revealSection(id);
+  }
+}
+
+function revealSection(id){
+  const el = document.getElementById('tab-' + id);
+  if(!el) return;
+  el.classList.add('active');
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('visible')));
+  const navH = document.querySelector('nav').offsetHeight;
+  const heroH = document.querySelector('.hero').offsetHeight;
+  window.scrollTo({ top: navH + heroH - 10, behavior: 'smooth' });
+}
+
+setTimeout(() => document.getElementById('tab-home').classList.add('visible'), 60);
+</script>
+</body>
+</html>
